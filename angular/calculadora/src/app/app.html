@@ -1,0 +1,64 @@
+
+<div>
+
+  <label>num 1:</label>
+  <input
+    type="number"
+    [(ngModel)]="numero1"
+  >
+
+</div>
+
+<br>
+
+<div>
+
+  <label>num 2:</label>
+  <input
+    type="number"
+    [(ngModel)]="numero2"
+  >
+
+</div>
+
+<br>
+
+<div>
+
+  <label>Operación:</label>
+
+  <select [(ngModel)]="operacion">
+
+    <option value="+">+</option>
+
+    <option value="-">-</option>
+
+    <option value="*">*</option>
+
+    <option value="/">/</option>
+
+  </select>
+
+</div>
+
+<br>
+
+<button (click)="calcular()">
+  select
+</button>
+
+<hr>
+
+<h2>Resultado</h2>
+
+<p>{{ resultado }}</p>
+
+<hr>
+
+<h2>Historial</h2>
+
+@for (operacion of historial; track $index) {
+
+  <p>{{ operacion }}</p>
+
+}
