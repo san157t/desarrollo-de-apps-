@@ -9,5 +9,23 @@
 
 <ion-content class="ion-padding">
   <h1>ion-chip</h1>
-  <p>Los chips representan entidades complejas en pequeños bloques, como un contacto. Un chip puede contener varios elementos diferentes, como avatares, texto e iconos.</p>
+  <p>Los chips representan una entrada, atributo o acción compacta.</p>
+
+  <ion-chip>
+    <ion-label>Predeterminado</ion-label>
+  </ion-chip>
+
+  <ion-chip color="primary">
+    <ion-label>Primario</ion-label>
+  </ion-chip>
+
+  <ion-chip color="success">
+    <ion-icon name="checkmark-circle"></ion-icon>
+    <ion-label>Completado</ion-label>
+  </ion-chip>
+
+  <ion-chip color="danger" outline="true">
+    <ion-icon name="close-circle-outline"></ion-icon>
+    <ion-label>Cancelado</ion-label>
+  </ion-chip>
 </ion-content>

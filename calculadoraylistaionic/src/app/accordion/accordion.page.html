@@ -9,5 +9,34 @@
 
 <ion-content class="ion-padding">
   <h1>ion-accordion</h1>
-  <p>Los acordeones ofrecen secciones plegables en tu contenido para reducir el espacio vertical, a la vez que proporcionan una forma de organizar y agrupar la información. Todos ion-accordionlos componentes deben agruparse dentro ion-accordion-groupde otros componentes.</p>
+  <p>Un acordeón agrupa secciones de contenido que se pueden expandir o colapsar. Ejemplo con tres secciones:</p>
+
+  <ion-accordion-group>
+    <ion-accordion value="first">
+      <ion-item slot="header" color="light">
+        <ion-label>¿Qué es Ionic?</ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        Ionic es un framework para crear aplicaciones móviles con HTML, CSS y JavaScript/TypeScript.
+      </div>
+    </ion-accordion>
+
+    <ion-accordion value="second">
+      <ion-item slot="header" color="light">
+        <ion-label>¿Qué es Angular?</ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        Angular es un framework de desarrollo web mantenido por Google, usado como base de este proyecto.
+      </div>
+    </ion-accordion>
+
+    <ion-accordion value="third">
+      <ion-item slot="header" color="light">
+        <ion-label>¿Para qué sirve este ejemplo?</ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        Para mostrar cómo se usa el componente ion-accordion en una app real.
+      </div>
+    </ion-accordion>
+  </ion-accordion-group>
 </ion-content>

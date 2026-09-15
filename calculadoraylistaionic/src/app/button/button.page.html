@@ -9,5 +9,14 @@
 
 <ion-content class="ion-padding">
   <h1>ion-button</h1>
-  <p>Los botones proporcionan un elemento interactivo que se puede usar en formularios o en cualquier lugar donde se requiera una funcionalidad de botón estándar y sencilla. Pueden mostrar texto, iconos o ambos. Los botones se pueden personalizar con diversos atributos para lograr una apariencia específica.</p>
+  <p>Los botones permiten al usuario realizar una acción con un solo toque.</p>
+
+  <ion-button expand="block">Botón normal</ion-button>
+  <ion-button expand="block" color="secondary">Secundario</ion-button>
+  <ion-button expand="block" fill="outline">Outline</ion-button>
+  <ion-button expand="block" fill="clear">Clear</ion-button>
+  <ion-button expand="block" color="danger">
+    <ion-icon name="trash-outline" slot="start"></ion-icon>
+    Eliminar
+  </ion-button>
 </ion-content>

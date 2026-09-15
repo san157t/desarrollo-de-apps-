@@ -9,5 +9,16 @@
 
 <ion-content class="ion-padding">
   <h1>ion-infinite-scroll</h1>
-  <p>Infinite Scroll te permite cargar nuevos datos a medida que el usuario hace scroll en tu app.</p>
+  <p>Permite cargar más contenido automáticamente cuando el usuario llega al final de la lista.</p>
+
+  <ion-list>
+    <ion-item *ngFor="let item of items">
+      <ion-label>Elemento {{ item }}</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-infinite-scroll (ionInfinite)="cargarMas($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando más elementos...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

@@ -9,5 +9,23 @@
 
 <ion-content class="ion-padding">
   <h1>ion-modal</h1>
-  <p>Los Modals se deslizan dentro y fuera de la pantalla para mostrar una UI temporal, a menudo usados para páginas de login o registro.</p>
+  <p>Un modal es una ventana de contenido que aparece encima de la página actual.</p>
+
+  <ion-button expand="block" (click)="abrir()">Abrir Modal</ion-button>
+
+  <ion-modal [isOpen]="isOpen" (didDismiss)="cerrar()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Modal de ejemplo</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="cerrar()">Cerrar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        Este es el contenido dentro del modal.
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>

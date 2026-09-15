@@ -1,13 +1,18 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>typography</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/tab2"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Typography</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">typography</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <h1>Título h1</h1>
+  <h2>Título h2</h2>
+  <h3>Título h3</h3>
+  <p>Este es un párrafo normal de texto usando la tipografía por defecto de Ionic.</p>
+  <p><ion-text color="primary">Texto en color primario</ion-text></p>
+  <p><ion-text color="danger">Texto en color de peligro</ion-text></p>
+  <p><b>Texto en negrita</b> y <i>texto en cursiva</i>.</p>
 </ion-content>

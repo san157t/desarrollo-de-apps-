@@ -9,5 +9,17 @@
 
 <ion-content class="ion-padding">
   <h1>ion-checkbox</h1>
-  <p>Las casillas de verificación permiten seleccionar varias opciones de un conjunto. Aparecen marcadas (con una marca) cuando están activadas. Al hacer clic en una casilla de verificación, se activa o desactiva la checkedpropiedad. También se pueden marcar mediante programación configurando la checkedpropiedad.</p>
+  <p>Las casillas de verificación permiten seleccionar una o varias opciones de un conjunto.</p>
+
+  <ion-item>
+    <ion-checkbox [(ngModel)]="aceptado" slot="start"></ion-checkbox>
+    <ion-label>Acepto los términos y condiciones</ion-label>
+  </ion-item>
+
+  <ion-item>
+    <ion-checkbox slot="start" checked="true"></ion-checkbox>
+    <ion-label>Notificaciones activadas</ion-label>
+  </ion-item>
+
+  <p>Estado actual: {{ aceptado ? 'Aceptado' : 'No aceptado' }}</p>
 </ion-content>
