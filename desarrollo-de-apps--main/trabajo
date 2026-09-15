@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Lista de Mercado</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: system-ui, sans-serif;
+    background: #f4f6f8;
+    display: flex;
+    justify-content: center;
+    padding: 40px 16px;
+  }
+  h1 {
+    font-size: 1.4rem;
+    margin-top: 0;
+    color: #222;
+  }
+  .form-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 0.95rem;
+  }
+  #nombre { flex: 2; }
+  #cantidad { flex: 1; }
+  #precio { flex: 1; }
+  button {
+    flex: 1;
+    padding: 10px;
+    
+    color: #060101;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  button:hover 
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0 0;
+  }
+  li {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 4px;
+    border-bottom: 1px solid #eee;
+  }
+  li .nombre { font-weight: 600; flex: 2; }
+  li .cantidad { flex: 1; text-align: center; color: #666; }
+  li .subtotal { flex: 1; text-align: right; }
+  .total-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 2px solid #222;
+    font-weight: bold;
+    font-size: 1.1rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="form-row">
+    <input type="text" id="nombre" placeholder="Producto">
+    <input type="number" id="cantidad" placeholder="Cant." min="1">
+    <input type="number" id="precio" placeholder="Precio" min="0">
+    <button id="btnAgregar">Agregar</button>
+  </div>
+  <div class="error" id="error"></div>
+
+  <ul id="lista"></ul>
+
+  <div class="total-row">
+    <span>Total</span>
+    <span id="total">$0</span>
+  </div>
+</div>
+
+<script>
+  // Referencias a los elementos del DOM que vamos a usar
+  const inputNombre = document.getElementById('nombre');
+  const inputCantidad = document.getElementById('cantidad');
+  const inputPrecio = document.getElementById('precio');
+  const btnAgregar = document.getElementById('btnAgregar');
+  const lista = document.getElementById('lista');
+  const totalEl = document.getElementById('total');
+  const errorEl = document.getElementById('error');
+
+  // Aquí guardamos los productos en un arreglo (fuente de la verdad).
+  // Cada vez que este arreglo cambia, volvemos a "pintar" la lista completa.
+  let productos = [];
+
+  // Formatea números como moneda simple
+  function formatearPrecio(valor) {
+    return '$' + valor.toLocaleString('es-CO');
+  }
+
+  // Vuelve a dibujar la lista <ul> a partir del arreglo "productos"
+  function renderizar() {
+    // Limpiamos la lista actual
+    lista.innerHTML = '';
+
+    // Ordenamos por subtotal (cantidad * precio) de mayor a menor.
+    // Si prefieres orden alfabético, cambia esta línea por:
+    // const ordenados = [...productos].sort((a, b) => a.nombre.localeCompare(b.nombre));
+    const ordenados = [...productos].sort((a, b) => b.subtotal - a.subtotal);
+
+    ordenados.forEach(producto => {
+      const li = document.createElement('li');
+
+      const spanNombre = document.createElement('span');
+      spanNombre.className = 'nombre';
+      spanNombre.textContent = producto.nombre;
+
+      const spanCantidad = document.createElement('span');
+      spanCantidad.className = 'cantidad';
+      spanCantidad.textContent = 'x' + producto.cantidad;
+
+      const spanSubtotal = document.createElement('span');
+      spanSubtotal.className = 'subtotal';
+      spanSubtotal.textContent = formatearPrecio(producto.subtotal);
+
+      li.appendChild(spanNombre);
+      li.appendChild(spanCantidad);
+      li.appendChild(spanSubtotal);
+      lista.appendChild(li);
+    });
+
+    // Calculamos y mostramos el total general
+    const totalGeneral = productos.reduce((acum, p) => acum + p.subtotal, 0);
+    totalEl.textContent = formatearPrecio(totalGeneral);
+  }
+
+  // Lógica al hacer click en "Agregar"
+  function agregarProducto() {
+    const nombre = inputNombre.value.trim();
+    const cantidad = Number(inputCantidad.value);
+    const precio = Number(inputPrecio.value);
+
+    // Validación simple
+    if (!nombre || !cantidad || cantidad <= 0 || !precio || precio <= 0) {
+      errorEl.textContent = 'Completa producto, cantidad y precio (mayores a 0).';
+      return;
+    }
+    errorEl.textContent = '';
+
+    productos.push({
+      nombre,
+      cantidad,
+      precio,
+      subtotal: cantidad * precio
+    });
+
+    renderizar();
+
+    // Limpiamos los campos para el siguiente producto
+    inputNombre.value = '';
+    inputCantidad.value = '';
+    inputPrecio.value = '';
+    inputNombre.focus();
+  }
+
+  btnAgregar.addEventListener('click', agregarProducto);
+
+  // Bonus: permitir agregar con Enter desde cualquier campo
+  [inputNombre, inputCantidad, inputPrecio].forEach(input => {
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter') agregarProducto();
+    });
+  });
+</script>
+
+</body>
+</html>
