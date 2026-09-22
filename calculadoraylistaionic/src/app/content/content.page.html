@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/tab2"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Content</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" color="light">
+  <h1>ion-content</h1>
+  <p>El componente de contenido proporciona un área desplazable dentro de la app. Aquí un ejemplo con una lista larga que se puede desplazar:</p>
+
+  <ion-item *ngFor="let n of numeros">
+    <ion-label>Elemento número {{ n }}</ion-label>
+  </ion-item>
+</ion-content>

@@ -1,0 +1,21 @@
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import {
+  IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton,
+  IonTabBar, IonTabButton, IonIcon, IonLabel
+} from '@ionic/angular';
+
+@Component({
+  selector: 'app-tabs-comp',
+  templateUrl: './tabs-comp.page.html',
+  styleUrls: ['./tabs-comp.page.scss'],
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton,
+    IonTabBar, IonTabButton, IonIcon, IonLabel, CommonModule, FormsModule]
+})
+export class TabsCompPage implements OnInit {
+  seleccionada = 'inicio';
+
+  constructor() {}
+  ngOnInit() {}
+}
