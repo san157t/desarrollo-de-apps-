@@ -1,0 +1,5 @@
+{
+  "name": "uber-ionic-angular",
+  "integrations": { "capacitor": {} },
+  "type": "angular"
+}
