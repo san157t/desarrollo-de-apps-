@@ -1,40 +1,56 @@
-# Uber Frontend — Ionic + Angular
+# Uber – frontend Ionic (Angular standalone)
 
-Este proyecto migra el frontend React/Vite original a Ionic + Angular, conservando las pantallas y los endpoints de autenticación.
+Frontend para la API Laravel de `API_DOCUMENTATION.md`. Tres roles: cliente, conductor y administrador.
 
-## Backend configurado
-
-La API está configurada en `src/app/services/api.service.ts` con esta base:
-
-`http://20.20.1.157:8000/api`
-
-Se conservan estos endpoints:
-- `POST /auth/login`
-- `POST /auth/register`
-- `POST /auth/forgot-password`
-- `GET /auth/me`
-- `POST /auth/logout`
-
-Si el backend usa una ruta base diferente, cambia `BASE_URL` en ese servicio.
-
-## Instalar y ejecutar
-
-Necesitas Node.js y npm. Desde la carpeta del proyecto ejecuta:
+## Instalación
 
 ```bash
-npm install
-npm install -g @ionic/cli
+npm i -g @ionic/cli
+ionic start uber-app blank --type=angular-standalone --no-git
+cd uber-app
+rm -rf src/app/home src/app/app.component.html src/app/app.component.scss
+# copia la carpeta src/ de este zip encima de la del proyecto (reemplazando archivos)
+npm i leaflet@1.9.4
+npm i -D @types/leaflet@1.9
+```
+
+## Cambiar la IP de la API
+
+El backend está configurado en `20.20.1.51`. Si cambia, edita solo `API_HOST` en `src/app/config.ts`:
+
+```ts
+export const API_HOST = '20.20.1.51';
+export const API_URL = `http://${API_HOST}:8000/api`;
+```
+
+Con Laravel: `php artisan serve --host=0.0.0.0` y habilita CORS para `http://localhost:8100`.
+
+## Ejecutar
+
+```bash
 ionic serve
 ```
 
-La aplicación se abrirá normalmente en `http://localhost:8100`.
+Android/iOS con Capacitor: la API usa `http`, así que en `capacitor.config.ts` agrega
+`server: { cleartext: true }` (o usa HTTPS).
 
-## Si no conecta con el backend
+## Qué incluye
 
-1. Abre `http://20.20.1.157:8000` en el navegador del mismo equipo/red para comprobar que el servidor responde.
-2. Confirma que el backend está escuchando en la red, no solo en `127.0.0.1`.
-3. El backend debe permitir CORS desde el origen de Ionic (por ejemplo `http://localhost:8100`).
-4. Si pruebas desde un teléfono, debe estar conectado a la red que alcanza `20.20.1.157`.
-5. Si el backend no sirve HTTPS, en una app móvil nativa puede requerirse configurar el tráfico HTTP permitido en Capacitor/Android.
+- Login con selector **Usuario / Conductor / Administrador** (valida que la cuenta sea del tipo elegido), registro (usuario o conductor) y recuperar contraseña.
+- Cliente: inicio con tarifas, pedir viaje (mapa, búsqueda de destino, estimación, confirmar),
+  seguimiento en vivo (consulta cada 4 s), cancelar, historial paginado y calificación.
+- Conductor: conectarse/desconectarse, ver y aceptar solicitudes (maneja el 409),
+  llegué / iniciar / finalizar, y envío de GPS cada 5 s.
+- Admin: resumen, aprobar/rechazar/suspender conductores, tarifas y viajes con filtros.
 
-La dirección IP no se puede validar desde el ZIP; depende de que el servidor esté encendido y sea accesible desde tu red.
+## Supuestos
+
+- `POST /client/cancel/{id}` recibe el `id` que devuelve `/client/active` (solicitud o viaje).
+- No hay endpoint para recuperar el viaje activo del conductor; se guarda en `localStorage`.
+- Reportes y registros de auditoría del admin no se incluyen (la documentación no define su respuesta).
+- Mapa: OpenStreetMap/CARTO, búsqueda con Nominatim y rutas con OSRM (sin API keys).
+
+## Mapa
+
+Usa Leaflet 1.9.x con mosaicos de CARTO y, si no cargan, de OpenStreetMap. El dispositivo necesita internet
+para los mosaicos, la búsqueda de direcciones (Nominatim) y las rutas (OSRM); si no hay conexión se muestra un aviso.
