@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnDestroy, ViewChild, inject, signal } from '@angular/core';
-import { IonIcon, IonSpinner } from '@ionic/angular/standalone';
+import { IonIcon, IonSpinner } from '@ionic/angular';
 import { Api } from '../core/api.service';
 import { AuthService } from '../core/auth.service';
 import { GeoService, LatLng } from '../core/geo.service';

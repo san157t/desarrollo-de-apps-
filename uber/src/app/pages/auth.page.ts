@@ -1,18 +1,9 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonContent, NavController } from '@ionic/angular/standalone';
+import { IonContent, NavController } from '@ionic/angular';
 import { AuthService } from '../core/auth.service';
 import { Ui } from '../core/ui.service';
-import { errMsg } from '../config';
-
-type Role = 'client' | 'driver' | 'admin';
-
-const ROLES: { id: Role; label: string; hint: string }[] = [
-  { id: 'client', label: 'Usuario', hint: 'Pide viajes' },
-  { id: 'driver', label: 'Conductor', hint: 'Recibe viajes' },
-  { id: 'admin', label: 'Administrador', hint: 'Gestiona la plataforma' },
-];
-const LABEL: Record<Role, string> = { client: 'usuario', driver: 'conductor', admin: 'administrador' };
+import { USE_MOCK, errMsg } from '../config';
 
 @Component({
   selector: 'app-auth',
@@ -22,49 +13,26 @@ const LABEL: Record<Role, string> = { client: 'usuario', driver: 'conductor', ad
   template: `
   <ion-content>
     <div class="auth">
-      <header class="hero">
-        <svg class="hero-art" viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-          <g stroke="#fff" stroke-opacity=".09" stroke-width="1" fill="none">
-            <path d="M0 40H400M0 100H400M0 160H400M0 215H400M60 0V220M150 0V220M240 0V220M330 0V220"/>
-            <path d="M-20 190L140 90L260 130L420 20"/>
-          </g>
-          <path d="M60 160V100H240V40H330" stroke="#fff" stroke-width="3" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
-          <circle cx="60" cy="160" r="8" fill="#fff"/>
-          <rect x="322" y="32" width="16" height="16" fill="#fff"/>
-        </svg>
-        <span class="logo">Uber</span>
-        <span class="tagline">Muévete a tu manera</span>
-      </header>
-
+      <header class="hero"><span class="logo">Uber</span></header>
       <main class="auth-sheet">
         @if (mode() === 'login') {
           <h1 class="h2">Inicia sesión</h1>
-          <p class="muted sub">Elige cómo vas a entrar</p>
-
-          <div class="roles" role="radiogroup" aria-label="Tipo de cuenta">
-            @for (o of roles; track o.id) {
-              <button type="button" role="radio" class="role" [class.on]="role() === o.id"
-                      [attr.aria-checked]="role() === o.id" (click)="pick(o.id)">
-                <b>{{ o.label }}</b><span>{{ o.hint }}</span>
-              </button>
-            }
-          </div>
-
           <form (ngSubmit)="login()">
             <label class="lbl" for="lg">Correo o teléfono</label>
-            <input id="lg" name="login" class="field" [(ngModel)]="f.login" autocomplete="username" autocapitalize="off" required>
+            <input id="lg" name="login" class="field" [(ngModel)]="f.login" autocomplete="username" required>
             <label class="lbl" for="pw">Contraseña</label>
             <input id="pw" name="password" class="field" type="password" [(ngModel)]="f.password" autocomplete="current-password" required>
-            <button class="btn mt" type="submit" [disabled]="busy() || !f.login || !f.password">
-              {{ busy() ? 'Entrando…' : 'Entrar como ' + label() }}
-            </button>
+            <button class="btn mt" type="submit" [disabled]="busy() || !f.login || !f.password">{{ busy() ? 'Entrando…' : 'Continuar' }}</button>
           </form>
-
-          @if (role() !== 'admin') {
-            <button class="link" type="button" (click)="mode.set('forgot')">¿Olvidaste tu contraseña?</button>
-            <button class="btn alt" type="button" (click)="startRegister()">Crear cuenta de {{ label() }}</button>
-          } @else {
-            <p class="muted hint">Las cuentas de administrador las crea el equipo del sistema.</p>
+          <button class="link" type="button" (click)="mode.set('forgot')">¿Olvidaste tu contraseña?</button>
+          <button class="btn alt" type="button" (click)="mode.set('register')">Crear cuenta</button>
+          @if (demo) {
+            <p class="muted" style="margin-top:20px;text-align:center">Modo demo · entra como</p>
+            <div class="row" style="gap:8px;margin-top:8px">
+              <button class="btn alt sm" type="button" [disabled]="busy()" (click)="quick('cliente@demo.com')">Cliente</button>
+              <button class="btn alt sm" type="button" [disabled]="busy()" (click)="quick('conductor@demo.com')">Conductor</button>
+              <button class="btn alt sm" type="button" [disabled]="busy()" (click)="quick('admin@demo.com')">Admin</button>
+            </div>
           }
         } @else if (mode() === 'register') {
           <h1 class="h2">Crea tu cuenta</h1>
@@ -116,21 +84,12 @@ export class AuthPage {
   private nav = inject(NavController);
   private ui = inject(Ui);
 
-  roles = ROLES;
+  demo = USE_MOCK;
   mode = signal<'login' | 'register' | 'forgot'>('login');
-  role = signal<Role>('client');
   busy = signal(false);
   f = { login: '', password: '' };
   fp = { email: '', new_password: '' };
   r = { role: 'client', name: '', email: '', phone: '', password: '', license_number: '', plate: '', brand: '', model: '', year: 2022 as number | null, capacity: 4 as number | null, color: '' };
-
-  label() { return LABEL[this.role()]; }
-  pick(r: Role) { this.role.set(r); }
-
-  startRegister() {
-    this.r.role = this.role() === 'driver' ? 'driver' : 'client';
-    this.mode.set('register');
-  }
 
   regOk() {
     const r = this.r;
@@ -140,19 +99,17 @@ export class AuthPage {
 
   private async run(fn: () => Promise<void>) {
     this.busy.set(true);
-    try { await fn(); } catch (e: any) {
-      if (e?.wrongRole) {
-        const real = (LABEL as Record<string, string>)[e.actual] ?? 'otro tipo';
-        this.ui.toast(`Esta cuenta es de ${real}, no de ${this.label()}. Cambia la opción de arriba.`);
-      } else {
-        this.ui.toast(errMsg(e));
-      }
-    } finally { this.busy.set(false); }
+    try { await fn(); } catch (e) { this.ui.toast(errMsg(e)); } finally { this.busy.set(false); }
+  }
+
+  quick(email: string) {
+    this.f = { login: email, password: '123456' };
+    return this.login();
   }
 
   login() {
     return this.run(async () => {
-      await this.auth.login(this.f.login.trim(), this.f.password, this.role());
+      await this.auth.login(this.f.login.trim(), this.f.password);
       this.nav.navigateRoot(this.auth.home());
     });
   }

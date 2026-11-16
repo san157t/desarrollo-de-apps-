@@ -1,5 +1,5 @@
 import { Component, OnDestroy, ViewChild, computed, inject, signal } from '@angular/core';
-import { IonIcon, IonSpinner, NavController } from '@ionic/angular/standalone';
+import { IonIcon, IonSpinner, NavController } from '@ionic/angular';
 import { Api } from '../../core/api.service';
 import { GeoService } from '../../core/geo.service';
 import { Ui } from '../../core/ui.service';

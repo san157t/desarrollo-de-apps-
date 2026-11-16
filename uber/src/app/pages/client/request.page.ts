@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ViewChild, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonIcon, IonSpinner, NavController } from '@ionic/angular/standalone';
+import { IonIcon, IonSpinner, NavController } from '@ionic/angular';
 import { Api } from '../../core/api.service';
 import { GeoService, Place } from '../../core/geo.service';
 import { Ui } from '../../core/ui.service';

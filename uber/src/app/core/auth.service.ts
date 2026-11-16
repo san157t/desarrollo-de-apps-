@@ -22,16 +22,8 @@ export class AuthService {
     return res.user;
   }
 
-  /**
-   * Inicia sesión. Si se indica `expected`, verifica que la cuenta sea de ese tipo
-   * (usuario / conductor / administrador); si no, cierra la sesión y lanza un error.
-   */
-  async login(login: string, password: string, expected?: 'client' | 'driver' | 'admin') {
-    const res = await this.api.post('/auth/login', { login, password });
-    if (expected && res.user?.role !== expected) {
-      throw { wrongRole: true, actual: res.user?.role };
-    }
-    return this.save(res);
+  async login(login: string, password: string) {
+    return this.save(await this.api.post('/auth/login', { login, password }));
   }
 
   async register(body: any) {

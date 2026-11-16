@@ -2,7 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import {
   IonContent, IonIcon, IonInfiniteScroll, IonInfiniteScrollContent, IonLabel,
   IonRefresher, IonRefresherContent, IonTabBar, IonTabButton, IonTabs, NavController,
-} from '@ionic/angular/standalone';
+} from '@ionic/angular';
 import { Api } from '../../core/api.service';
 import { AuthService } from '../../core/auth.service';
 import { Ui } from '../../core/ui.service';

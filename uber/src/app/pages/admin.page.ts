@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonSpinner } from '@ionic/angular/standalone';
+import { IonContent, IonSpinner } from '@ionic/angular';
 import { Api } from '../core/api.service';
 import { AuthService } from '../core/auth.service';
 import { Ui } from '../core/ui.service';

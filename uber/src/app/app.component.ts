@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { IonApp, IonRouterOutlet } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { arrowBack, call, car, carSport, chevronForward, close, home, location, logOut, person, receipt, search } from 'ionicons/icons';
 

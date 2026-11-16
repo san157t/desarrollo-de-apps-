@@ -1,5 +1,7 @@
 {
-  "name": "uber-ionic-angular",
-  "integrations": { "capacitor": {} },
-  "type": "angular"
+  "name": "uber-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
 }

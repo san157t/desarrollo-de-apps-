@@ -1,7 +1,7 @@
-node_modules/
+﻿node_modules/
 .angular/
-dist/
 www/
+dist/
+.vscode/
+*.log
 .env
-.env.*
-!.env.example

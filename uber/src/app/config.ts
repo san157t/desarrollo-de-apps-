@@ -1,8 +1,12 @@
-/** IP del servidor backend (Laravel). Es lo único que hay que cambiar si el servidor se mueve. */
-export const API_HOST = '20.20.1.51';
+/** URL base de tu API Laravel. Cámbiala por la IP/host de tu servidor. */
+export const API_URL = 'http://20.20.1.22:8000/api';
 
-/** URL base de la API Laravel. */
-export const API_URL = `http://${API_HOST}:8000/api`;
+/**
+ * MODO DEMO: true = la app funciona SIN backend (datos simulados dentro de la app).
+ * Cuando el servidor 20.20.1.22 esté encendido, cámbialo a false.
+ * Cuentas demo (contraseña 123456): cliente@demo.com · conductor@demo.com · admin@demo.com
+ */
+export const USE_MOCK = false;
 
 /** Ubicación de respaldo si el navegador no entrega GPS (Bogotá, como en la documentación). */
 export const DEFAULT_CENTER = { lat: 4.6766, lng: -74.0483 };
@@ -37,6 +41,6 @@ export function errMsg(e: any): string {
     return Array.isArray(first) ? first[0] : String(first);
   }
   if (b?.message) return b.message;
-  if (e?.status === 0) return `No se pudo conectar con el servidor (${API_HOST}). Revisa que el backend esté encendido y que estés en la misma red.`;
+  if (e?.status === 0) return 'No se pudo conectar con el servidor. Revisa API_URL en config.ts y que la API esté encendida.';
   return 'Ocurrió un error inesperado. Intenta de nuevo.';
 }
